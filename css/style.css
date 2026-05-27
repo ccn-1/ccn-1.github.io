@@ -692,6 +692,11 @@ body {
   list-style: none;
   margin: 0;
   padding: 0;
+  max-height: calc(100vh - 210px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+  padding-right: 4px;
 }
 .article-toc-body li {
   margin: 0 0 8px;
@@ -702,13 +707,28 @@ body {
   padding-left: 14px;
 }
 .article-toc-body a {
-  display: inline-block;
+  display: block;
   color: #5a5a5a;
   text-decoration: none;
   font-size: 14px;
+  border-radius: 8px;
+  padding: 4px 8px;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease;
+  transition: all 0.2s ease;
 }
 .article-toc-body a:hover {
+  background: #f7f7f4;
   color: #1f1f1f;
+}
+.article-toc-body a.is-active {
+  color: #1f1f1f;
+  background: #f3f4f8;
+  -webkit-transform: translateX(3px);
+  -moz-transform: translateX(3px);
+  -ms-transform: translateX(3px);
+  transform: translateX(3px);
 }
 .article-toc-mobile {
   display: none;
@@ -748,6 +768,11 @@ body {
   list-style: none;
   margin: 0;
   padding: 0;
+  max-height: 52vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+  padding-right: 4px;
 }
 .article-toc-mobile-body li {
   margin: 0 0 6px;
@@ -761,9 +786,21 @@ body {
   color: #5a5a5a;
   text-decoration: none;
   font-size: 14px;
+  display: block;
+  border-radius: 8px;
+  padding: 3px 6px;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease;
+  transition: all 0.2s ease;
 }
 .article-toc-mobile-body a:hover {
+  background: #f7f7f4;
   color: #1f1f1f;
+}
+.article-toc-mobile-body a.is-active {
+  color: #1f1f1f;
+  background: #f3f4f8;
 }
 @media screen and (max-width: 1100px) {
   .article-shell {

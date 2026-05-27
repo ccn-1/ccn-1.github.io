@@ -135,4 +135,71 @@
 
     $container.removeClass('mobile-nav-on');
   });
+
+  // TOC smooth scroll + active item
+  var $tocLinks = $('.article-toc-body a, .article-toc-mobile-body a');
+  if ($tocLinks.length) {
+    var headerOffset = 92;
+    var headingSelector = '.article-entry h2[id], .article-entry h3[id]';
+
+    var resolveTarget = function(hash){
+      if (!hash || hash === '#') return null;
+      var rawId = hash.slice(1);
+      var decodedId = rawId;
+      try {
+        decodedId = decodeURIComponent(rawId);
+      } catch (e) {}
+      return document.getElementById(decodedId) || document.getElementById(rawId);
+    };
+
+    var setActiveByHash = function(hash){
+      $tocLinks.removeClass('is-active');
+      $tocLinks.each(function(){
+        if (this.hash === hash) {
+          $(this).addClass('is-active');
+        }
+      });
+    };
+
+    $tocLinks.on('click', function(e){
+      var target = resolveTarget(this.hash);
+      if (!target) return;
+      e.preventDefault();
+      var top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+      window.scrollTo({
+        top: top > 0 ? top : 0,
+        behavior: 'smooth'
+      });
+      setActiveByHash(this.hash);
+      history.replaceState(null, '', this.hash);
+    });
+
+    var ticking = false;
+    var updateActiveByScroll = function(){
+      ticking = false;
+      var headings = document.querySelectorAll(headingSelector);
+      if (!headings.length) return;
+
+      var current = headings[0];
+      var threshold = headerOffset + 8;
+      for (var i = 0; i < headings.length; i++) {
+        if (headings[i].getBoundingClientRect().top <= threshold) {
+          current = headings[i];
+        } else {
+          break;
+        }
+      }
+      if (current && current.id) {
+        setActiveByHash('#' + encodeURIComponent(current.id));
+      }
+    };
+
+    $(window).on('scroll', function(){
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(updateActiveByScroll);
+    });
+
+    updateActiveByScroll();
+  }
 })(jQuery);
